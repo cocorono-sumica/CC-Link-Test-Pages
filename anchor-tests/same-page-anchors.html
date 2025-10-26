@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同一ページ内アンカー - テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .nav-links {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-links a {
+            display: inline-block;
+            margin: 5px 10px 5px 0;
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav-links a:hover {
+            background: #5568d3;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .test-section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        .test-list li {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+        }
+        .test-list a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .test-list a:hover {
+            text-decoration: underline;
+        }
+        .expected {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .anchor-target {
+            background: #fff3cd;
+            padding: 20px;
+            margin: 40px 0;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+            min-height: 150px;
+        }
+        .anchor-target h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .error-link {
+            border-left-color: #dc3545 !important;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← ダッシュボードに戻る</a>
+
+    <h1>⚓ 同一ページ内アンカー - テスト</h1>
+
+    <div class="test-section" style="background: #e8f5e9; border-left: 4px solid #4caf50; margin-top: 20px;">
+        <h2 style="color: #2e7d32;">📊 期待される検出結果</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #c8e6c9;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #a5d6a7;">カテゴリー</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #a5d6a7;">件数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">総リンク数</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>7</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">✅ 正常</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>5</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">❌ エラー</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>2</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 15px; color: #555; font-size: 0.95em;">
+            💡 <strong>内訳:</strong> ダッシュボードリンク(1件) + 正常なアンカー(4件) + 存在しないアンカー(2件エラー)
+        </p>
+    </div>
+
+    <div class="nav-links">
+        <strong>ページ内ナビゲーション:</strong>
+        <a href="#section1">Section 1</a>
+        <a href="#section2">Section 2</a>
+        <a href="#section3">Section 3</a>
+        <a href="#top-section">Top Section</a>
+    </div>
+
+    <div class="test-section">
+        <h2>テスト項目</h2>
+        <ul class="test-list">
+            <li>
+                <a href="#section1">✓ 正常なアンカー (#section1)</a>
+                <div class="expected">期待: ✓ アンカー発見 (content.jsで処理)</div>
+            </li>
+            <li>
+                <a href="#section2">✓ 正常なアンカー (#section2)</a>
+                <div class="expected">期待: ✓ アンカー発見 (content.jsで処理)</div>
+            </li>
+            <li>
+                <a href="#section3">✓ 正常なアンカー (#section3)</a>
+                <div class="expected">期待: ✓ アンカー発見 (content.jsで処理)</div>
+            </li>
+            <li>
+                <a href="#top-section">✓ 正常なアンカー (#top-section)</a>
+                <div class="expected">期待: ✓ アンカー発見 (content.jsで処理)</div>
+            </li>
+            <li class="error-link">
+                <a href="#nonexistent">✗ 存在しないアンカー (#nonexistent)</a>
+                <div class="expected">期待: ✗ アンカー不在 (エラー検出)</div>
+            </li>
+            <li class="error-link">
+                <a href="#missing-target">✗ 存在しないアンカー (#missing-target)</a>
+                <div class="expected">期待: ✗ アンカー不在 (エラー検出)</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>同一ページ内のアンカーリンクは <code>content.js</code> で処理される</li>
+            <li>存在するアンカーは「✓ アンカー発見」として表示される</li>
+            <li>存在しないアンカーは「✗ アンカー不在」としてエラー検出される</li>
+            <li>アンカーリンクをクリックすると該当箇所にスムーズにスクロールする</li>
+        </ul>
+    </div>
+
+    <!-- アンカーターゲット -->
+    <div id="top-section" class="anchor-target">
+        <h3>📍 Top Section</h3>
+        <p>これはページ上部のアンカーターゲットです。</p>
+        <p>ページ内ナビゲーションからここにジャンプできます。</p>
+    </div>
+
+    <div id="section1" class="anchor-target">
+        <h3>📍 Section 1</h3>
+        <p>これは section1 のターゲットです。</p>
+        <p>アンカーリンク #section1 でこの位置にジャンプします。</p>
+    </div>
+
+    <div id="section2" class="anchor-target">
+        <h3>📍 Section 2</h3>
+        <p>これは section2 のターゲットです。</p>
+        <p>アンカーリンク #section2 でこの位置にジャンプします。</p>
+    </div>
+
+    <div id="section3" class="anchor-target">
+        <h3>📍 Section 3</h3>
+        <p>これは section3 のターゲットです。</p>
+        <p>アンカーリンク #section3 でこの位置にジャンプします。</p>
+    </div>
+
+    <div class="test-section" style="margin-top: 50px;">
+        <h2>テスト結果の確認方法</h2>
+        <ol style="padding-left: 25px; line-height: 1.8; color: #555;">
+            <li>拡張機能のアイコンをクリックして起動</li>
+            <li>「Check Links」ボタンをクリック</li>
+            <li>結果を確認:
+                <ul style="margin-top: 10px;">
+                    <li><strong>section1, section2, section3, top-section</strong> → ✓ アンカー発見（緑色）</li>
+                    <li><strong>nonexistent, missing-target</strong> → ✗ アンカー不在（赤色エラー）</li>
+                </ul>
+            </li>
+            <li>エラー番号が表示され、該当箇所へのジャンプ機能が利用可能</li>
+        </ol>
+    </div>
+</body>
+</html>

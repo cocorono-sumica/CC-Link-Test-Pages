@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>非表示要素 - テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .test-section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        .test-list li {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+        }
+        .test-list a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .test-list a:hover {
+            text-decoration: underline;
+        }
+        .expected {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* 非表示のパターン */
+        .display-none {
+            display: none;
+        }
+        .visibility-hidden {
+            visibility: hidden;
+        }
+        .opacity-zero {
+            opacity: 0;
+        }
+        .width-zero {
+            display: inline-block; /* インライン要素に width/height を効かせるため */
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+        .off-screen {
+            position: absolute;
+            left: -9999px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← ダッシュボードに戻る</a>
+
+    <h1>⚙️ 非表示要素 - テスト</h1>
+
+    <div class="test-section" style="background: #e8f5e9; border-left: 4px solid #4caf50;">
+        <h2 style="color: #2e7d32;">📊 期待される検出結果</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #c8e6c9;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #a5d6a7;">カテゴリー</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #a5d6a7;">件数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">総リンク数</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>6</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">✅ 正常</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>1</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">❌ エラー</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>0</strong></td>
+                </tr>
+                <tr style="background: #fff9c4;">
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">👁️‍🗨️ 非表示エラー</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>5</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 15px; color: #555; font-size: 0.95em;">
+            💡 <strong>内訳:</strong> ダッシュボードリンク(正常1件) + 5種類の非表示パターン(非表示エラー5件)
+        </p>
+    </div>
+
+    <div class="test-section">
+        <h2>display: none</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            display: none で非表示にされたリンクです。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="nonexistent-page.html#display-none" class="display-none">⚠ display:none のリンク（エラーページ）</a>
+                <div class="expected">期待: 非表示要素として検出 + エラー</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>visibility: hidden</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            visibility: hidden で非表示にされたリンクです。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="nonexistent-page.html#visibility-hidden" class="visibility-hidden">⚠ visibility:hidden のリンク（エラーページ）</a>
+                <div class="expected">期待: 非表示要素として検出 + エラー</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>opacity: 0</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            opacity: 0 で非表示にされたリンクです。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="nonexistent-page.html#opacity-zero" class="opacity-zero">⚠ opacity:0 のリンク（エラーページ）</a>
+                <div class="expected">期待: 非表示要素として検出 + エラー</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>サイズ0の要素</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            width: 0; height: 0 で非表示にされたリンクです。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="nonexistent-page.html#width-zero" class="width-zero">⚠ width/height:0 のリンク（エラーページ）</a>
+                <div class="expected">期待: 非表示要素として検出 + エラー</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>画面外の要素</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            position: absolute; left: -9999px で画面外に配置されたリンクです。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="nonexistent-page.html#off-screen" class="off-screen">⚠ 画面外のリンク（エラーページ）</a>
+                <div class="expected">期待: 非表示要素として検出 + エラー</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>各種CSSで非表示にされた要素が正しく検出される</li>
+            <li>非表示理由が詳細に表示される</li>
+            <li>「非表示」バッジが表示される</li>
+            <li>「非表示エラー」フィルターで表示できる</li>
+            <li>非表示の理由リストが表示される</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>テスト結果の確認方法</h2>
+        <ol style="padding-left: 25px; line-height: 1.8; color: #555;">
+            <li>拡張機能のアイコンをクリックして起動</li>
+            <li>「Check Links」ボタンをクリック</li>
+            <li>結果を確認:
+                <ul style="margin-top: 10px;">
+                    <li>すべてのリンクに <strong>👁️‍🗨️ 非表示</strong> バッジが表示される</li>
+                    <li>非表示理由が詳細に表示される（display:none、visibility:hidden など）</li>
+                    <li>404エラーも同時に検出される</li>
+                </ul>
+            </li>
+            <li>フィルターで「非表示エラー」を選択し、非表示要素のみ表示できることを確認</li>
+        </ol>
+    </div>
+
+    <div class="test-section" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+        <h2 style="color: #856404;">💡 非表示要素の検出について</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>拡張機能は以下の方法で非表示を検出します:
+                <ul style="margin-top: 8px;">
+                    <li><code>display: none</code></li>
+                    <li><code>visibility: hidden</code></li>
+                    <li><code>opacity: 0</code></li>
+                    <li>サイズが0の要素（width: 0, height: 0）</li>
+                    <li>画面外に配置された要素</li>
+                </ul>
+            </li>
+            <li>非表示要素のエラーは、実際のユーザーには見えないため、優先度が低い場合があります</li>
+            <li>しかし、コード品質や将来の保守性のために修正を推奨します</li>
+        </ul>
+    </div>
+</body>
+</html>

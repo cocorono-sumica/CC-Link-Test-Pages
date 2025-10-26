@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空のhref - テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .test-section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        .test-list li {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .visible-empty {
+            border-left: 4px solid #dc3545;
+        }
+        .hidden-empty {
+            border-left: 4px solid #ffc107;
+        }
+        .test-list a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .test-list a:hover {
+            text-decoration: underline;
+        }
+        .expected {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .hidden-link {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← ダッシュボードに戻る</a>
+
+    <h1>⚙️ 空のhref - テスト</h1>
+
+    <div class="test-section" style="background: #e8f5e9; border-left: 4px solid #4caf50;">
+        <h2 style="color: #2e7d32;">📊 期待される検出結果</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #c8e6c9;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #a5d6a7;">カテゴリー</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #a5d6a7;">件数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">総リンク数</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>5</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">✅ 正常</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>1</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">❌ エラー</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>0</strong></td>
+                </tr>
+                <tr style="background: #ffebee;">
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">📄 空欄（表示）</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>2</strong></td>
+                </tr>
+                <tr style="background: #fff9c4;">
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">⏸️ 非表示空欄（保留）</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>2</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 15px; color: #555; font-size: 0.95em;">
+            💡 <strong>内訳:</strong> ダッシュボードリンク(正常1件) + 表示されている空href(2件) + 非表示の空href(2件)
+        </p>
+    </div>
+
+    <div class="test-section">
+        <h2>表示されている空のhref</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            UI上で表示されている空のhrefリンクです。これらはエラーとして検出されます。
+        </p>
+        <ul class="test-list">
+            <li class="visible-empty">
+                <a href="">✗ 空のhref（表示）</a>
+                <div class="expected">期待: Empty href (Visible) - エラー</div>
+            </li>
+            <li class="visible-empty">
+                <a href="">✗ 空のhref（表示）- 2つ目</a>
+                <div class="expected">期待: Empty href (Visible) - エラー</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>非表示の空のhref</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            UI上で非表示の空のhrefリンクです。これらは保留として検出されます。
+        </p>
+        <ul class="test-list">
+            <li class="hidden-empty">
+                <a href="" class="hidden-link">⚠ 空のhref（非表示）</a>
+                <div class="expected">期待: Empty href (Hidden) - 保留</div>
+            </li>
+            <li class="hidden-empty">
+                <a href="" class="hidden-link">⚠ 空のhref（非表示）- 2つ目</a>
+                <div class="expected">期待: Empty href (Hidden) - 保留</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>空のhref属性（href=""）が正しく検出される</li>
+            <li>表示されている空のhrefは「エラー」として扱われる</li>
+            <li>非表示の空のhrefは「保留」として扱われる</li>
+            <li>ステータスが「empty-visible」または「empty-hidden」になる</li>
+            <li>専用のフィルターでそれぞれ表示できる</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>テスト結果の確認方法</h2>
+        <ol style="padding-left: 25px; line-height: 1.8; color: #555;">
+            <li>拡張機能のアイコンをクリックして起動</li>
+            <li>「Check Links」ボタンをクリック</li>
+            <li>結果を確認:
+                <ul style="margin-top: 10px;">
+                    <li>表示されている空のhrefは <strong>Empty href (Visible)</strong> でエラー表示</li>
+                    <li>非表示の空のhrefは <strong>Empty href (Hidden)</strong> で保留表示</li>
+                </ul>
+            </li>
+            <li>フィルター機能で「空欄（表示）」と「非表示空欄（保留）」をそれぞれ確認</li>
+            <li>統計情報で空欄数が正しくカウントされることを確認</li>
+        </ol>
+    </div>
+
+    <div class="test-section" style="background: #d1ecf1; border-left: 4px solid #17a2b8;">
+        <h2 style="color: #0c5460;">💡 空のhrefについて</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>空のhref（href=""）は現在のページを指します</li>
+            <li>クリックするとページがリロードされます</li>
+            <li>アクセシビリティの観点から推奨されません</li>
+            <li>JavaScript等で動的に設定される場合もありますが、基本的には避けるべきです</li>
+        </ul>
+    </div>
+</body>
+</html>

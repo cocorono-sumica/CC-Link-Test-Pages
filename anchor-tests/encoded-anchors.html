@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>エンコードされたアンカー - テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .test-section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        .test-list li {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+        }
+        .test-list a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .test-list a:hover {
+            text-decoration: underline;
+        }
+        .expected {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .anchor-target {
+            background: #d1ecf1;
+            padding: 20px;
+            margin: 40px 0;
+            border-left: 4px solid #17a2b8;
+            border-radius: 4px;
+            min-height: 120px;
+        }
+        .anchor-target h3 {
+            margin-top: 0;
+            color: #0c5460;
+        }
+        .code-display {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← ダッシュボードに戻る</a>
+
+    <h1>⚓ エンコードされたアンカー - テスト</h1>
+
+    <div class="test-section" style="background: #e8f5e9; border-left: 4px solid #4caf50;">
+        <h2 style="color: #2e7d32;">📊 期待される検出結果</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #c8e6c9;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #a5d6a7;">カテゴリー</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #a5d6a7;">件数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">総リンク数</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>5</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">✅ 正常</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>5</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">❌ エラー</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>0</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 15px; color: #555; font-size: 0.95em;">
+            💡 <strong>内訳:</strong> ダッシュボードリンク(1件) + 日本語・特殊文字アンカー(4件)
+        </p>
+    </div>
+
+    <div class="test-section">
+        <h2>テスト項目</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            日本語や特殊文字を含むアンカーIDのエンコード/デコード処理をテストします。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="#日本語">✓ 日本語アンカー (#日本語)</a>
+                <div class="expected">期待: ✓ アンカー発見 (デコード処理成功)</div>
+            </li>
+            <li>
+                <a href="#日本語セクション">✓ 日本語アンカー (#日本語セクション)</a>
+                <div class="expected">期待: ✓ アンカー発見 (デコード処理成功)</div>
+            </li>
+            <li>
+                <a href="#special-chars_123">✓ 特殊文字アンカー (#special-chars_123)</a>
+                <div class="expected">期待: ✓ アンカー発見</div>
+            </li>
+            <li>
+                <a href="#ユーザー情報-2024">✓ 混在文字アンカー (#ユーザー情報-2024)</a>
+                <div class="expected">期待: ✓ アンカー発見 (デコード処理成功)</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>日本語を含むアンカーIDが正しくデコードされる</li>
+            <li>URLエンコードされた文字列が正しく処理される</li>
+            <li>英数字と日本語が混在したIDも正しく処理される</li>
+            <li>ハイフン、アンダースコアなどの特殊文字も正しく処理される</li>
+        </ul>
+    </div>
+
+    <!-- アンカーターゲット -->
+    <div id="日本語" class="anchor-target">
+        <h3>📍 日本語アンカー</h3>
+        <p>これは日本語IDのアンカーターゲットです。</p>
+        <div class="code-display">ID: 日本語</div>
+        <p style="margin-top: 10px;">URLでは自動的にエンコードされますが、拡張機能は正しくデコードして検出します。</p>
+    </div>
+
+    <div id="日本語セクション" class="anchor-target">
+        <h3>📍 日本語セクション</h3>
+        <p>これも日本語IDのアンカーターゲットです。</p>
+        <div class="code-display">ID: 日本語セクション</div>
+        <p style="margin-top: 10px;">スペースを含む日本語IDも正しく処理されます。</p>
+    </div>
+
+    <div id="special-chars_123" class="anchor-target">
+        <h3>📍 特殊文字アンカー</h3>
+        <p>ハイフンとアンダースコア、数字を含むIDです。</p>
+        <div class="code-display">ID: special-chars_123</div>
+        <p style="margin-top: 10px;">英数字と特殊文字の組み合わせも正しく処理されます。</p>
+    </div>
+
+    <div id="ユーザー情報-2024" class="anchor-target">
+        <h3>📍 混在文字アンカー</h3>
+        <p>日本語、ハイフン、数字が混在したIDです。</p>
+        <div class="code-display">ID: ユーザー情報-2024</div>
+        <p style="margin-top: 10px;">複雑な文字の組み合わせも正しくデコードされます。</p>
+    </div>
+
+    <div class="test-section" style="margin-top: 50px;">
+        <h2>テスト結果の確認方法</h2>
+        <ol style="padding-left: 25px; line-height: 1.8; color: #555;">
+            <li>拡張機能のアイコンをクリックして起動</li>
+            <li>「Check Links」ボタンをクリック</li>
+            <li>結果を確認:
+                <ul style="margin-top: 10px;">
+                    <li>すべてのアンカーが <strong>✓ アンカー発見</strong> と表示される</li>
+                    <li>デコード後のIDが正しく表示される</li>
+                    <li>エンコード処理の詳細がアンカー情報セクションに表示される</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+</body>
+</html>

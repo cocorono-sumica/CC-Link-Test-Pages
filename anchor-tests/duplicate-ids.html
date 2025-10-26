@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重複ID検証 - テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .test-section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        .test-list li {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+        }
+        .test-list a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .test-list a:hover {
+            text-decoration: underline;
+        }
+        .expected {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .error-link {
+            border-left-color: #dc3545 !important;
+        }
+        .warning-box {
+            background: #fff3cd;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+        }
+        .warning-box h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .duplicate-section {
+            background: #f8d7da;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+            border-radius: 4px;
+        }
+        .duplicate-section h4 {
+            margin-top: 0;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← ダッシュボードに戻る</a>
+
+    <h1>⚓ 重複ID検証 - テスト</h1>
+
+    <div class="test-section" style="background: #e8f5e9; border-left: 4px solid #4caf50; margin-top: 20px;">
+        <h2 style="color: #2e7d32;">📊 期待される検出結果</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #c8e6c9;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #a5d6a7;">カテゴリー</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #a5d6a7;">件数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">総リンク数</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>3</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">✅ 正常</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>2</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">❌ エラー</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>0</strong></td>
+                </tr>
+                <tr style="background: #fff3cd;">
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">⚠️ 重複ID</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>1</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 15px; color: #555; font-size: 0.95em;">
+            💡 <strong>内訳:</strong> ダッシュボードリンク(1件) + ユニークID(1件) + 重複ID(1件)
+        </p>
+        <p style="margin-top: 10px; color: #856404; font-size: 0.9em;">
+            ⚠️ <strong>注:</strong> 同じアンカーへの複数リンクは重複除外されるため、#duplicate-idへの2つのリンクは1件としてカウントされます。
+        </p>
+    </div>
+
+    <div class="warning-box">
+        <h3>⚠️ このページについて</h3>
+        <p>このページには<strong>意図的に重複したID</strong>が含まれています。</p>
+        <p>HTML仕様では、1つのページ内で同じIDを複数回使用することは禁止されていますが、実際にはこのようなエラーが発生することがあります。</p>
+        <p>拡張機能はこのような重複IDを検出し、警告を表示します。</p>
+    </div>
+
+    <div class="test-section">
+        <h2>テスト項目</h2>
+        <ul class="test-list">
+            <li>
+                <a href="#unique-id">✓ ユニークなID (#unique-id)</a>
+                <div class="expected">期待: ✓ アンカー発見 (正常)</div>
+            </li>
+            <li class="error-link">
+                <a href="#duplicate-id">⚠ 重複ID (#duplicate-id) - 1回目のリンク</a>
+                <div class="expected">期待: ⚠ 重複ID検出 (Duplicate ID Detected)</div>
+            </li>
+            <li class="error-link">
+                <a href="#duplicate-id">⚠ 重複ID (#duplicate-id) - 2回目のリンク</a>
+                <div class="expected">期待: ⚠ 重複ID検出 (Duplicate ID Detected)</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>ページ内に同じIDが複数存在する場合、重複ID警告が表示される</li>
+            <li>ステータスは「anchor-duplicate」として検出される</li>
+            <li>重複IDは別カテゴリとして集計され、フィルタリング可能</li>
+            <li>ユニークなIDは正常として検出される</li>
+        </ul>
+    </div>
+
+    <!-- 正常なアンカーターゲット -->
+    <div id="unique-id" style="background: #d4edda; padding: 20px; margin: 30px 0; border-left: 4px solid #28a745; border-radius: 4px;">
+        <h3 style="margin-top: 0; color: #155724;">📍 Unique ID</h3>
+        <p>これはユニークなIDです。ページ内で1回のみ使用されています。</p>
+        <code>id="unique-id"</code>
+    </div>
+
+    <!-- 重複したID（1つ目） -->
+    <div id="duplicate-id" class="duplicate-section">
+        <h4>⚠️ Duplicate ID - 1つ目</h4>
+        <p>これは重複したIDです（1つ目）。</p>
+        <code>id="duplicate-id"</code>
+        <p style="margin-top: 10px; font-size: 0.9em;">HTML仕様違反: 同じIDがページ内に複数存在します。</p>
+    </div>
+
+    <!-- 重複したID（2つ目） -->
+    <div id="duplicate-id" class="duplicate-section">
+        <h4>⚠️ Duplicate ID - 2つ目</h4>
+        <p>これは重複したIDです（2つ目）。</p>
+        <code>id="duplicate-id"</code>
+        <p style="margin-top: 10px; font-size: 0.9em;">HTML仕様違反: 同じIDがページ内に複数存在します。</p>
+    </div>
+
+    <div class="test-section" style="margin-top: 50px;">
+        <h2>テスト結果の確認方法</h2>
+        <ol style="padding-left: 25px; line-height: 1.8; color: #555;">
+            <li>拡張機能のアイコンをクリックして起動</li>
+            <li>「Check Links」ボタンをクリック</li>
+            <li>結果を確認:
+                <ul style="margin-top: 10px;">
+                    <li><strong>unique-id</strong> → ✓ アンカー発見（緑色）</li>
+                    <li><strong>duplicate-id（両方）</strong> → ⚠ 重複ID検出（黄色/オレンジ色）</li>
+                </ul>
+            </li>
+            <li>フィルターで「重複ID」を選択すると、重複IDのみが表示される</li>
+            <li>統計情報に重複ID数が表示される</li>
+        </ol>
+    </div>
+
+    <div class="warning-box" style="margin-top: 30px;">
+        <h3>💡 重複IDの影響</h3>
+        <ul style="line-height: 1.8;">
+            <li>JavaScriptの <code>document.getElementById()</code> は最初の要素のみを返す</li>
+            <li>アンカーリンクのジャンプ先が不定になる</li>
+            <li>CSSのスタイリングが意図しない要素に適用される可能性</li>
+            <li>アクセシビリティツールが正しく動作しない可能性</li>
+        </ul>
+        <p style="margin-top: 15px; font-weight: bold; color: #856404;">
+            → 実際のWebサイトでは重複IDを修正することを強く推奨します
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ソフトエラーテストページ（コンテンツベース）</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff5f5;
+        }
+        .warning-box {
+            background: #fff3cd;
+            padding: 30px;
+            margin: 20px 0;
+            border-left: 6px solid #ffc107;
+            border-radius: 8px;
+        }
+        .warning-box h1 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .error-content {
+            background: #f8d7da;
+            padding: 30px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+            border-radius: 4px;
+            color: #721c24;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
+        <h3 style="color: #2e7d32; margin-top: 0;">📊 期待される検出結果（このページ自体をチェックする場合）</h3>
+        <p style="margin: 10px 0; font-size: 0.95em; color: #555;">
+            <strong>総リンク数:</strong> 1 | <strong>✅ 正常:</strong> 1 | <strong>❌ エラー:</strong> 0
+        </p>
+        <p style="margin: 5px 0; font-size: 0.9em; color: #666;">
+            💡 このページ自体はダッシュボードリンクのみです。
+        </p>
+        <p style="margin: 5px 0; font-size: 0.9em; color: #856404;">
+            ⚠️ <strong>注:</strong> 他のページからこのページへのリンクをチェックすると、200 OKですがソフトエラー(コンテンツベース)として検出されます。
+        </p>
+    </div>
+
+    <div class="warning-box">
+        <h1>⚠️ ソフトエラーテストページ（コンテンツベース）</h1>
+        <p>このページは正常に読み込まれますが、コンテンツに「エラー」を示すキーワードが含まれています。</p>
+    </div>
+
+    <div class="error-content">
+        <h2>ページが見つかりませんでした</h2>
+        <p><strong>エラー:</strong> お探しのページは存在しません。</p>
+        <p>404 Not Found - リソースが見つかりませんでした。</p>
+        <p>このコンテンツにはソフトエラーのキーワードが含まれています:</p>
+        <ul>
+            <li>「ページが見つかりません」</li>
+            <li>「エラー」</li>
+            <li>「404」</li>
+            <li>「Not Found」</li>
+        </ul>
+    </div>
+
+    <div style="background: white; padding: 25px; border-radius: 8px; margin: 20px 0;">
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>HTTPステータスは200 OKですが、ソフトエラーとして検出される</li>
+            <li>エラータイプ: <code>soft-error-content</code></li>
+            <li>ページのコンテンツからキーワードを検出</li>
+            <li>検出されたキーワードが表示される</li>
+            <li>エラー理由が明確に表示される</li>
+        </ul>
+    </div>
+
+    <div style="background: #d1ecf1; padding: 25px; border-radius: 8px; border-left: 4px solid #17a2b8;">
+        <h2 style="color: #0c5460;">💡 コンテンツベースのソフトエラー</h2>
+        <p style="color: #555; line-height: 1.8;">
+            タイトルだけでなく、ページのコンテンツ（body内のテキスト）にもエラーを示すキーワードが含まれている場合、ソフトエラーとして検出されます。
+            これにより、より正確にエラーページを識別できます。
+        </p>
+        <p style="color: #555; line-height: 1.8; margin-top: 15px;">
+            検出対象となる主なキーワード:
+        </p>
+        <ul style="color: #555; line-height: 1.8;">
+            <li>エラー、エラーが発生、404、403、500</li>
+            <li>ページが見つかりません、not found、アクセスできません</li>
+            <li>削除されました、存在しません、移動しました</li>
+        </ul>
+    </div>
+
+    <a href="../index.html" class="back-link">← ダッシュボードに戻る</a>
+</body>
+</html>

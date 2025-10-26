@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Meta Refresh: 5秒後にindex.htmlへリダイレクト -->
+    <meta http-equiv="refresh" content="5;url=../index.html">
+    <title>Metaリダイレクトテストページ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f0f8ff;
+        }
+        .redirect-box {
+            background: white;
+            padding: 40px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .redirect-box h1 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .redirect-icon {
+            font-size: 5em;
+            margin: 20px 0;
+        }
+        .countdown {
+            font-size: 3em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .info-box {
+            background: #e7f3ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            text-align: left;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            background: #5568d3;
+        }
+    </style>
+</head>
+<body>
+    <div style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 20px; margin: 20px; border-radius: 8px; text-align: left;">
+        <h3 style="color: #2e7d32; margin-top: 0;">📊 期待される検出結果（このページ自体をチェックする場合）</h3>
+        <p style="margin: 10px 0; font-size: 0.95em; color: #555;">
+            <strong>総リンク数:</strong> 1 | <strong>✅ 正常:</strong> 1 | <strong>❌ エラー:</strong> 0
+        </p>
+        <p style="margin: 5px 0; font-size: 0.9em; color: #666;">
+            💡 このページ自体はダッシュボードリンクのみです。
+        </p>
+        <p style="margin: 5px 0; font-size: 0.9em; color: #856404;">
+            ⚠️ <strong>注:</strong> 他のページからこのページへのリンクをチェックすると、Metaリダイレクト情報が検出されます。
+        </p>
+    </div>
+
+    <div class="redirect-box">
+        <div class="redirect-icon">🔄</div>
+        <h1>Metaリダイレクトテストページ</h1>
+        <p style="font-size: 1.2em; color: #666;">
+            このページは <span class="countdown" id="countdown">5</span> 秒後に自動的にダッシュボードへリダイレクトされます
+        </p>
+        <a href="../index.html" class="back-link">今すぐ移動する →</a>
+    </div>
+
+    <div class="info-box">
+        <h2 style="color: #667eea; margin-top: 0;">🔍 検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>HTTPステータスは200 OKですが、Metaリダイレクトとして検出される</li>
+            <li>リダイレクトタイプ: <code>meta-refresh</code></li>
+            <li>遅延時間: 5秒</li>
+            <li>リダイレクト先: ../index.html</li>
+            <li>コンテンツ分析情報に詳細が表示される</li>
+        </ul>
+    </div>
+
+    <div class="info-box" style="background: #d1ecf1; border-left-color: #17a2b8;">
+        <h2 style="color: #0c5460; margin-top: 0;">💡 Metaリダイレクトとは</h2>
+        <p style="color: #555; line-height: 1.8;">
+            HTMLのmetaタグを使用したリダイレクトです。以下のような形式で記述されます:
+        </p>
+        <pre style="background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto;"><code>&lt;meta http-equiv="refresh" content="5;url=../index.html"&gt;</code></pre>
+        <p style="color: #555; line-height: 1.8; margin-top: 15px;">
+            <strong>メリット:</strong> JavaScriptが無効でも動作します<br>
+            <strong>デメリット:</strong> SEOの観点からはHTTPリダイレクト（301, 302）が推奨されます
+        </p>
+    </div>
+
+    <script>
+        // カウントダウン表示（視覚的な効果のみ）
+        let seconds = 5;
+        const countdownEl = document.getElementById('countdown');
+
+        const timer = setInterval(() => {
+            seconds--;
+            if (seconds >= 0) {
+                countdownEl.textContent = seconds;
+            }
+            if (seconds === 0) {
+                clearInterval(timer);
+                countdownEl.textContent = 'リダイレクト中...';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

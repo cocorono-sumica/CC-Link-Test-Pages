@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リンクチェッカー テストダッシュボード</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .version {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .test-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .category-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+        }
+
+        .category-title {
+            font-size: 1.4em;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .category-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .test-links {
+            list-style: none;
+        }
+
+        .test-links li {
+            margin-bottom: 12px;
+        }
+
+        .test-links a {
+            display: block;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .test-links a:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .test-count {
+            background: rgba(255,255,255,0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            margin-left: 8px;
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .info-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .info-section ul {
+            padding-left: 25px;
+        }
+
+        .info-section li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>リンクチェッカー テストダッシュボード</h1>
+            <p class="subtitle">Chrome拡張機能 - CC Link Status Interval Checker</p>
+            <span class="version">v2.0</span>
+        </header>
+
+        <div class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">カテゴリ</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">テストページ</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">検証項目</div>
+            </div>
+        </div>
+
+        <div class="test-categories">
+            <!-- アンカーリンク -->
+            <div class="category-card">
+                <div class="category-header">
+                    <span class="category-icon">⚓</span>
+                    <h2 class="category-title">アンカーリンク</h2>
+                </div>
+                <p class="category-description">
+                    ページ内アンカー、別ページへのアンカー、エンコード処理、重複IDなどの検証
+                </p>
+                <ul class="test-links">
+                    <li><a href="anchor-tests/same-page-anchors.html">同一ページ内アンカー <span class="test-count">6項目</span></a></li>
+                    <li><a href="anchor-tests/cross-page-anchors.html">別ページへのアンカー <span class="test-count">5項目</span></a></li>
+                    <li><a href="anchor-tests/encoded-anchors.html">エンコードされたアンカー <span class="test-count">4項目</span></a></li>
+                    <li><a href="anchor-tests/duplicate-ids.html">重複ID検証 <span class="test-count">3項目</span></a></li>
+                </ul>
+            </div>
+
+            <!-- 内部リンク -->
+            <div class="category-card">
+                <div class="category-header">
+                    <span class="category-icon">🔗</span>
+                    <h2 class="category-title">内部リンク</h2>
+                </div>
+                <p class="category-description">
+                    正常なリンク、404エラー、相対/絶対パスなどの検証
+                </p>
+                <ul class="test-links">
+                    <li><a href="internal-links/valid-links.html">正常なリンク <span class="test-count">5項目</span></a></li>
+                    <li><a href="internal-links/broken-links.html">404エラー <span class="test-count">4項目</span></a></li>
+                    <li><a href="internal-links/relative-absolute-paths.html">相対/絶対パス <span class="test-count">6項目</span></a></li>
+                </ul>
+            </div>
+
+            <!-- 特殊ケース -->
+            <div class="category-card">
+                <div class="category-header">
+                    <span class="category-icon">⚙️</span>
+                    <h2 class="category-title">特殊ケース</h2>
+                </div>
+                <p class="category-description">
+                    空のhref、非表示要素、特殊プロトコル、リダイレクトの検証
+                </p>
+                <ul class="test-links">
+                    <li><a href="special-cases/empty-hrefs.html">空のhref <span class="test-count">4項目</span></a></li>
+                    <li><a href="special-cases/hidden-elements.html">非表示要素 <span class="test-count">5項目</span></a></li>
+                    <li><a href="special-cases/special-protocols.html">特殊プロトコル <span class="test-count">4項目</span></a></li>
+                    <li><a href="special-cases/redirects.html">リダイレクト <span class="test-count">6項目</span></a></li>
+                </ul>
+            </div>
+
+            <!-- エラーページ -->
+            <div class="category-card">
+                <div class="category-header">
+                    <span class="category-icon">⚠️</span>
+                    <h2 class="category-title">エラーページ</h2>
+                </div>
+                <p class="category-description">
+                    ソフトエラー、リダイレクト、404ページなどのシミュレート
+                </p>
+                <ul class="test-links">
+                    <li><a href="error-pages/404.html">404ページ <span class="test-count">直接表示</span></a></li>
+                    <li><a href="error-pages/soft-error-title.html">ソフトエラー（タイトル） <span class="test-count">検証用</span></a></li>
+                    <li><a href="error-pages/soft-error-content.html">ソフトエラー（コンテンツ） <span class="test-count">検証用</span></a></li>
+                    <li><a href="error-pages/meta-redirect.html">Metaリダイレクト <span class="test-count">検証用</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>使い方</h2>
+            <ol style="padding-left: 25px; line-height: 1.8; color: #555;">
+                <li>上記のカテゴリから、テストしたい項目のリンクをクリック</li>
+                <li>テストページが開いたら、拡張機能のアイコンをクリック</li>
+                <li>「Check Links」ボタンをクリックしてリンクチェックを実行</li>
+                <li>結果を確認し、期待通りの動作をしているか検証</li>
+            </ol>
+
+            <h2 style="margin-top: 25px;">検証できる項目</h2>
+            <ul>
+                <li><strong>アンカーリンク:</strong> 同一ページ内アンカー、別ページアンカー、エンコード処理、重複ID検出</li>
+                <li><strong>内部リンク:</strong> 正常なリンク、404エラー、相対パス/絶対パスの処理</li>
+                <li><strong>特殊ケース:</strong> 空のhref、非表示要素の検出、mailto:/tel:などの特殊プロトコル、各種リダイレクト</li>
+                <li><strong>エラー検出:</strong> ソフトエラー（タイトル/コンテンツベース）、自動転送の検出</li>
+                <li><strong>UI/UX:</strong> ハイライト機能、ジャンプ機能、エラー番号表示</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

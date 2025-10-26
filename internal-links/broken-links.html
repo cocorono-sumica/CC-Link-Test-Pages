@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404エラー - テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .test-section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        .test-list li {
+            margin: 12px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #dc3545;
+            border-radius: 4px;
+        }
+        .test-list a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .test-list a:hover {
+            text-decoration: underline;
+        }
+        .expected {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← ダッシュボードに戻る</a>
+
+    <h1>🔗 404エラー - テスト</h1>
+
+    <div class="test-section" style="background: #e8f5e9; border-left: 4px solid #4caf50;">
+        <h2 style="color: #2e7d32;">📊 期待される検出結果</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #c8e6c9;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #a5d6a7;">カテゴリー</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #a5d6a7;">件数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">総リンク数</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>5</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">✅ 正常</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>1</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">❌ エラー (404)</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>4</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 15px; color: #555; font-size: 0.95em;">
+            💡 <strong>内訳:</strong> ダッシュボードリンク(正常1件) + 404エラーリンク(4件)
+        </p>
+    </div>
+
+    <div class="test-section">
+        <h2>テスト項目</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            存在しないページへのリンクを検証します。すべて404エラーが期待されます。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="nonexistent-page.html">✗ 存在しないページ1</a>
+                <div class="expected">期待: 404 Not Found</div>
+            </li>
+            <li>
+                <a href="missing-file.html">✗ 存在しないページ2</a>
+                <div class="expected">期待: 404 Not Found</div>
+            </li>
+            <li>
+                <a href="../invalid-folder/test.html">✗ 存在しないフォルダ内のページ</a>
+                <div class="expected">期待: 404 Not Found</div>
+            </li>
+            <li>
+                <a href="deleted-page.html">✗ 削除されたページ（想定）</a>
+                <div class="expected">期待: 404 Not Found</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>存在しないページへのリンクが正しく検出される</li>
+            <li>ステータスコードが404であること</li>
+            <li>エラーとして赤色で表示されること</li>
+            <li>エラー番号が割り当てられること</li>
+            <li>「エラー」フィルターで表示されること</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>テスト結果の確認方法</h2>
+        <ol style="padding-left: 25px; line-height: 1.8; color: #555;">
+            <li>拡張機能のアイコンをクリックして起動</li>
+            <li>「Check Links」ボタンをクリック</li>
+            <li>結果を確認:
+                <ul style="margin-top: 10px;">
+                    <li>すべてのリンクが <strong>404 Not Found</strong> で表示される</li>
+                    <li>赤色のステータスバッジが表示される</li>
+                    <li>エラー番号（1, 2, 3, 4）が表示される</li>
+                </ul>
+            </li>
+            <li>「エラー」フィルターですべてのリンクが表示されることを確認</li>
+            <li>統計情報でエラー数が4と表示されることを確認</li>
+        </ol>
+    </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正常なページ1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #e7f3ff;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #28a745;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .content-box {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .anchor-section {
+            background: #d4edda;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <a href="valid-links.html" class="back-link">← テストページに戻る</a>
+
+    <h1>✅ 正常なページ1</h1>
+
+    <div style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 20px; margin: 20px 0; border-radius: 8px;">
+        <h3 style="color: #2e7d32; margin-top: 0;">📊 期待される検出結果</h3>
+        <p style="margin: 10px 0; font-size: 0.95em; color: #555;">
+            <strong>総リンク数:</strong> 1 | <strong>✅ 正常:</strong> 1 | <strong>❌ エラー:</strong> 0
+        </p>
+        <p style="margin: 5px 0; font-size: 0.9em; color: #666;">
+            💡 このページはテストページに戻るリンクのみです。
+        </p>
+    </div>
+
+    <div class="content-box">
+        <h2>このページについて</h2>
+        <p>これは正常にアクセスできるテストページです。</p>
+        <p>リンクチェッカーはこのページに対して <strong>200 OK</strong> を返すはずです。</p>
+    </div>
+
+    <div id="section1" class="anchor-section">
+        <h3>📍 Section 1</h3>
+        <p>これはアンカーターゲットです。</p>
+        <p>valid-links.html からアンカー付きリンクでここにアクセスできます。</p>
+    </div>
+
+    <div class="content-box">
+        <h2>テスト項目</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>ページが正常に読み込まれる</li>
+            <li>HTTPステータスコード: 200 OK</li>
+            <li>アンカーリンク (#section1) も正しく動作する</li>
+        </ul>
+    </div>
+</body>
+</html>
