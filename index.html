@@ -215,13 +215,26 @@
                 </tbody>
             </table>
             <p style="margin-top: 15px; color: #555; font-size: 0.95em; line-height: 1.6;">
-                💡 <strong>内訳:</strong><br>
+                💡 <strong>内訳（ローカル開発環境）:</strong><br>
                 • 正常リンク: アンカーテスト(4) + 内部リンク(3) + 特殊ケース(4) = 11件<br>
                 • エラー: 404ページ(1) + ソフトエラー×2(2) = 3件<br>
                 • リダイレクト: Metaリダイレクト(1) ※200 OKだがリダイレクト情報を検出<br>
             </p>
             <p style="margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 5px; color: #856404; font-size: 0.9em;">
                 ⚠️ <strong>注意:</strong> エラーページセクションのリンクをチェックすると、各エラータイプ（404、ソフトエラー、リダイレクト）の検出機能をテストできます。
+            </p>
+            <p style="margin-top: 10px; padding: 10px; background: #e3f2fd; border-radius: 5px; color: #1565c0; font-size: 0.9em; border-left: 4px solid #2196f3;">
+                🌐 <strong>公開ページ（GitHub Pages）での検出について:</strong><br>
+                公開ページ（<a href="https://cocorono-sumica.github.io/CC-Link-Test-Pages/" target="_blank" style="color: #1565c0; text-decoration: underline;">https://cocorono-sumica.github.io/CC-Link-Test-Pages/</a>）で拡張機能を実行すると、検出結果が異なる場合があります。<br>
+                <br>
+                <strong>主な違い:</strong><br>
+                • <strong>エラー数</strong>: 4件程度（期待値より多い）<br>
+                • <strong>リダイレクト数</strong>: 1-4件（環境により変動）<br>
+                <br>
+                <strong>理由:</strong><br>
+                • GitHub Pagesでは、404.htmlなどのエラーページが実際のHTTPステータスコード（404など）を返すことがあり、その場合でもタイトルに「404」「エラー」などの文言が含まれるため、ソフトエラーとして誤検出される可能性があります<br>
+                • 開発環境（Live Server）では全てのHTMLファイルがHTTP 200を返すため、ソフトエラー検出が正しく機能します<br>
+                • この挙動は、検出ロジックの改善余地を示しています（詳細は下記「改善提案」を参照）<br>
             </p>
         </div>
 
