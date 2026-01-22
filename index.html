@@ -198,15 +198,15 @@
                 <tbody>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #c8e6c9;">総リンク数</td>
-                        <td style="padding: 10px; text-align: center; border: 1px solid #c8e6c9;"><strong>15</strong></td>
+                        <td style="padding: 10px; text-align: center; border: 1px solid #c8e6c9;"><strong>16</strong></td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #c8e6c9;">✅ 正常</td>
                         <td style="padding: 10px; text-align: center; border: 1px solid #c8e6c9;"><strong>11</strong></td>
                     </tr>
                     <tr>
-                        <td style="padding: 10px; border: 1px solid #c8e6c9;">❌ エラー</td>
-                        <td style="padding: 10px; text-align: center; border: 1px solid #c8e6c9;"><strong>3</strong></td>
+                        <td style="padding: 10px; border: 1px solid #c8e6c9;">❌ エラー（ソフトエラー含む）</td>
+                        <td style="padding: 10px; text-align: center; border: 1px solid #c8e6c9;"><strong>4</strong></td>
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #c8e6c9;">🔄 リダイレクト検出</td>
@@ -216,8 +216,9 @@
             </table>
             <p style="margin-top: 15px; color: #555; font-size: 0.95em; line-height: 1.6;">
                 💡 <strong>内訳（ローカル開発環境）:</strong><br>
-                • 正常リンク: アンカーテスト(4) + 内部リンク(3) + 特殊ケース(4) = 11件<br>
-                • エラー: 404ページ(1) + ソフトエラー×2(2) = 3件<br>
+                • 正常リンク: 外部(1) + アンカーテスト(4) + 内部リンク(2) + 特殊ケース(4) = 11件<br>
+                • エラー: 404ページ(1) + ソフトエラー×3(3) = 4件<br>
+                　※broken-links.htmlはタイトルに「404エラー」を含むためソフトエラーとして検出<br>
                 • リダイレクト: Metaリダイレクト(1) ※200 OKだがリダイレクト情報を検出<br>
             </p>
             <p style="margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 5px; color: #856404; font-size: 0.9em;">
@@ -228,27 +229,25 @@
                 公開ページ（<a href="https://cocorono-sumica.github.io/CC-Link-Test-Pages/" target="_blank" style="color: #1565c0; text-decoration: underline;">https://cocorono-sumica.github.io/CC-Link-Test-Pages/</a>）で拡張機能を実行すると、検出結果が異なる場合があります。<br>
                 <br>
                 <strong>主な違い:</strong><br>
-                • <strong>エラー数</strong>: 4件程度（期待値より多い）<br>
                 • <strong>リダイレクト数</strong>: 1-4件（環境により変動）<br>
                 <br>
                 <strong>理由:</strong><br>
-                • GitHub Pagesでは、404.htmlなどのエラーページが実際のHTTPステータスコード（404など）を返すことがあり、その場合でもタイトルに「404」「エラー」などの文言が含まれるため、ソフトエラーとして誤検出される可能性があります<br>
-                • 開発環境（Live Server）では全てのHTMLファイルがHTTP 200を返すため、ソフトエラー検出が正しく機能します<br>
-                • この挙動は、検出ロジックの改善余地を示しています（詳細は下記「改善提案」を参照）<br>
+                • GitHub Pagesでは、存在しないページへのアクセス時に404リダイレクトが発生することがあります<br>
+                • ソフトエラー検出は「可能性ベース」で動作し、タイトルやコンテンツにエラーキーワードを含むページを検出します<br>
             </p>
         </div>
 
         <div class="quick-stats">
             <div class="stat-card">
-                <div class="stat-number">4</div>
+                <div class="stat-number">5</div>
                 <div class="stat-label">カテゴリ</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">15+</div>
+                <div class="stat-number">30+</div>
                 <div class="stat-label">テストページ</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">50+</div>
+                <div class="stat-number">70+</div>
                 <div class="stat-label">検証項目</div>
             </div>
         </div>
@@ -320,6 +319,21 @@
                     <li><a href="error-pages/meta-redirect.html">Metaリダイレクト <span class="test-count">検証用</span></a></li>
                 </ul>
             </div>
+
+            <!-- エッジケース（誤検知テスト） -->
+            <div class="category-card">
+                <div class="category-header">
+                    <span class="category-icon">🔍</span>
+                    <h2 class="category-title">エッジケース（誤検知テスト）</h2>
+                </div>
+                <p class="category-description">
+                    ソフトエラー・リダイレクト検出の誤検知（False Positive）を検証
+                </p>
+                <ul class="test-links">
+                    <li><a href="edge-cases/soft-error-false-positive.html">ソフトエラー誤検知テスト <span class="test-count">9項目</span></a></li>
+                    <li><a href="edge-cases/redirect-false-positive.html">リダイレクト誤検知テスト <span class="test-count">7項目</span></a></li>
+                </ul>
+            </div>
         </div>
 
         <div class="info-section">
@@ -346,7 +360,7 @@
         <div class="info-section" style="margin-top: 30px;">
             <h2>全ページURL一覧（コピー用）</h2>
             <p style="color: #666; margin-bottom: 15px;">CC-Link-Status-Interval-Multi-Checker用に、全ページのURLを改行区切りで配置しています。テキストエリアをクリックして全選択・コピーできます。</p>
-            <textarea readonly onclick="this.select();" style="width: 100%; height: 480px; font-family: monospace; font-size: 13px; padding: 15px; border: 2px solid #667eea; border-radius: 8px; background: #f8f9fa; resize: vertical; line-height: 1.6;">https://cocorono-sumica.github.io/CC-Link-Test-Pages/index.html
+            <textarea readonly onclick="this.select();" style="width: 100%; height: 600px; font-family: monospace; font-size: 13px; padding: 15px; border: 2px solid #667eea; border-radius: 8px; background: #f8f9fa; resize: vertical; line-height: 1.6;">https://cocorono-sumica.github.io/CC-Link-Test-Pages/index.html
 https://cocorono-sumica.github.io/CC-Link-Test-Pages/anchor-tests/same-page-anchors.html
 https://cocorono-sumica.github.io/CC-Link-Test-Pages/anchor-tests/cross-page-anchors.html
 https://cocorono-sumica.github.io/CC-Link-Test-Pages/anchor-tests/encoded-anchors.html
@@ -366,8 +380,24 @@ https://cocorono-sumica.github.io/CC-Link-Test-Pages/error-pages/soft-error-titl
 https://cocorono-sumica.github.io/CC-Link-Test-Pages/error-pages/soft-error-content.html
 https://cocorono-sumica.github.io/CC-Link-Test-Pages/error-pages/meta-redirect.html
 https://cocorono-sumica.github.io/CC-Link-Test-Pages/error-pages/js-redirect-basic.html
-https://cocorono-sumica.github.io/CC-Link-Test-Pages/error-pages/js-redirect-delayed.html</textarea>
-            <p style="color: #888; font-size: 0.9em; margin-top: 10px;">合計: 21ページ</p>
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/error-pages/js-redirect-delayed.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/soft-error-false-positive.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/redirect-false-positive.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/normal-page-error-keyword.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/normal-page-404-keyword.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/normal-page-forbidden-keyword.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/normal-page-content-error.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/normal-page-notfound-content.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/normal-page-redirect-content.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/normal-page-code-sample.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/normal-page-config-sample.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/page-with-function-redirect.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/page-with-postback.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/page-with-onclick-redirect.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/page-with-addeventlistener.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/page-with-commented-redirect.html
+https://cocorono-sumica.github.io/CC-Link-Test-Pages/edge-cases/page-with-string-redirect.html</textarea>
+            <p style="color: #888; font-size: 0.9em; margin-top: 10px;">合計: 37ページ</p>
         </div>
     </div>
 </body>

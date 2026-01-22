@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字列内リダイレクトコード - テストページ</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .note { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .string { color: #ce9178; }
+        #output { background: #f5f5f5; padding: 15px; border-radius: 5px; margin-top: 15px; }
+    </style>
+    <script>
+        // 文字列内のリダイレクトコードは実行されません
+
+        // シングルクォート文字列
+        const example1 = 'location.href = "../index.html";';
+
+        // ダブルクォート文字列
+        const example2 = "window.location = 'https://example.com';";
+
+        // テンプレートリテラル
+        const example3 = `window.location.href = 'other-page.html';`;
+
+        // コードサンプルの配列
+        const codeExamples = [
+            "location.href = 'page1.html';",
+            "window.location = 'page2.html';",
+            "window.location.replace('page3.html');",
+            "setTimeout(function() { location.href = 'page4.html'; }, 3000);"
+        ];
+
+        // console.logで出力（これは実行されるが、リダイレクトではない）
+        console.log("リダイレクトコード例: location.href = 'example.html';");
+
+        // ページロード時に文字列を表示
+        document.addEventListener('DOMContentLoaded', function() {
+            const output = document.getElementById('output');
+            if (output) {
+                output.innerHTML = '<strong>含まれている文字列リテラル:</strong><br><br>';
+                output.innerHTML += '1. ' + example1 + '<br>';
+                output.innerHTML += '2. ' + example2 + '<br>';
+                output.innerHTML += '3. ' + example3 + '<br>';
+            }
+        });
+    </script>
+</head>
+<body>
+    <a href="redirect-false-positive.html" class="back-link">← テストページに戻る</a>
+
+    <h1>文字列内リダイレクトコード - テストページ</h1>
+
+    <div class="content">
+        <h2>このページについて</h2>
+        <p>
+            このページには<strong>文字列リテラル内</strong>に<code>location.href</code>コードが含まれていますが、
+            文字列は単なるデータであり<strong>実行されません</strong>。
+        </p>
+
+        <div class="note">
+            <strong>✅ 期待される検出結果:</strong> リダイレクトとして検出<strong>されない</strong>
+        </div>
+
+        <h2>含まれている文字列リテラル</h2>
+        <pre>
+<span class="string">// シングルクォート文字列</span>
+const example1 = <span class="string">'location.href = "../index.html";'</span>;
+
+<span class="string">// ダブルクォート文字列</span>
+const example2 = <span class="string">"window.location = 'https://example.com';"</span>;
+
+<span class="string">// テンプレートリテラル</span>
+const example3 = <span class="string">`window.location.href = 'other-page.html';`</span>;
+
+<span class="string">// 配列内の文字列</span>
+const codeExamples = [
+    <span class="string">"location.href = 'page1.html';"</span>,
+    <span class="string">"window.location = 'page2.html';"</span>,
+    <span class="string">"window.location.replace('page3.html');"</span>
+];
+
+<span class="string">// console.log内の文字列</span>
+console.log(<span class="string">"リダイレクトコード例: location.href = 'example.html';"</span>);
+        </pre>
+
+        <h2>実行結果</h2>
+        <div id="output">読み込み中...</div>
+
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8;">
+            <li>シングルクォート <code>'...'</code> 内のコードを除外すること</li>
+            <li>ダブルクォート <code>"..."</code> 内のコードを除外すること</li>
+            <li>テンプレートリテラル <code>`...`</code> 内のコードを除外すること</li>
+            <li><code>console.log()</code> の引数文字列も除外すること</li>
+        </ul>
+    </div>
+</body>
+</html>

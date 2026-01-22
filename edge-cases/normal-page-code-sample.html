@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTPステータスコード一覧と処理方法 - API開発ガイド</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 50px auto; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 13px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #667eea; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        .code-comment { color: #6a9955; }
+        .code-keyword { color: #569cd6; }
+        .code-string { color: #ce9178; }
+        .code-number { color: #b5cea8; }
+    </style>
+</head>
+<body>
+    <a href="soft-error-false-positive.html" class="back-link">← テストページに戻る</a>
+
+    <h1>HTTPステータスコード一覧と処理方法</h1>
+
+    <div class="content">
+        <h2>主なステータスコード一覧</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>コード</th>
+                    <th>名称</th>
+                    <th>説明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>200</td>
+                    <td>OK</td>
+                    <td>リクエスト成功</td>
+                </tr>
+                <tr>
+                    <td>301</td>
+                    <td>Moved Permanently</td>
+                    <td>恒久的リダイレクト</td>
+                </tr>
+                <tr>
+                    <td>400</td>
+                    <td>Bad Request</td>
+                    <td>不正なリクエスト</td>
+                </tr>
+                <tr>
+                    <td>401</td>
+                    <td>Unauthorized</td>
+                    <td>認証が必要</td>
+                </tr>
+                <tr>
+                    <td>403</td>
+                    <td>Forbidden</td>
+                    <td>アクセス禁止</td>
+                </tr>
+                <tr>
+                    <td>404</td>
+                    <td>Not Found</td>
+                    <td>リソースが見つからない</td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>Internal Server Error</td>
+                    <td>サーバー内部エラー</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>JavaScript での処理例</h2>
+        <pre>
+<span class="code-keyword">async function</span> fetchData(url) {
+    <span class="code-keyword">try</span> {
+        <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> fetch(url);
+
+        <span class="code-comment">// ステータスコード別の処理</span>
+        <span class="code-keyword">switch</span> (response.status) {
+            <span class="code-keyword">case</span> <span class="code-number">200</span>:
+                <span class="code-keyword">return await</span> response.json();
+
+            <span class="code-keyword">case</span> <span class="code-number">401</span>:
+                <span class="code-keyword">throw new</span> Error(<span class="code-string">'認証が必要です'</span>);
+
+            <span class="code-keyword">case</span> <span class="code-number">403</span>:
+                <span class="code-keyword">throw new</span> Error(<span class="code-string">'Forbidden: アクセスが禁止されています'</span>);
+
+            <span class="code-keyword">case</span> <span class="code-number">404</span>:
+                <span class="code-keyword">throw new</span> Error(<span class="code-string">'Not Found: リソースが見つかりません'</span>);
+
+            <span class="code-keyword">case</span> <span class="code-number">500</span>:
+                <span class="code-keyword">throw new</span> Error(<span class="code-string">'サーバーエラーが発生しました'</span>);
+
+            <span class="code-keyword">default</span>:
+                <span class="code-keyword">throw new</span> Error(<span class="code-string">`予期しないエラー: ${response.status}`</span>);
+        }
+    } <span class="code-keyword">catch</span> (error) {
+        console.error(<span class="code-string">'エラーが発生しました:'</span>, error);
+        <span class="code-keyword">throw</span> error;
+    }
+}
+        </pre>
+
+        <h2>エラーハンドリングのベストプラクティス</h2>
+        <pre>
+<span class="code-comment">// エラーメッセージの定義</span>
+<span class="code-keyword">const</span> ERROR_MESSAGES = {
+    <span class="code-number">400</span>: <span class="code-string">'リクエストが不正です'</span>,
+    <span class="code-number">401</span>: <span class="code-string">'ログインが必要です'</span>,
+    <span class="code-number">403</span>: <span class="code-string">'アクセス権限がありません'</span>,
+    <span class="code-number">404</span>: <span class="code-string">'ページが見つかりません'</span>,
+    <span class="code-number">500</span>: <span class="code-string">'サーバーでエラーが発生しました'</span>
+};
+
+<span class="code-keyword">function</span> getErrorMessage(status) {
+    <span class="code-keyword">return</span> ERROR_MESSAGES[status] || <span class="code-string">'不明なエラーです'</span>;
+}
+        </pre>
+
+        <h2>まとめ</h2>
+        <p>
+            HTTPステータスコードを適切に処理することで、
+            ユーザーに分かりやすいエラーメッセージを表示できます。
+            特に 403 (Forbidden) や 404 (Not Found) などの
+            一般的なエラーには、専用の処理を実装しましょう。
+        </p>
+    </div>
+</body>
+</html>

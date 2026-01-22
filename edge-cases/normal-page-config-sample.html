@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webサーバー設定ガイド - Apache/Nginx設定例</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 50px auto; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 13px; }
+        .config-section { background: #f5f5f5; border: 1px solid #ddd; padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .config-section h3 { color: #667eea; margin-top: 0; }
+        .note { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 15px 0; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <a href="soft-error-false-positive.html" class="back-link">← テストページに戻る</a>
+
+    <h1>Webサーバー設定ガイド</h1>
+
+    <div class="content">
+        <h2>Apache (.htaccess) 設定例</h2>
+
+        <div class="config-section">
+            <h3>カスタムエラーページの設定</h3>
+            <pre>
+# .htaccess ファイル
+
+# 404エラーページのカスタマイズ
+ErrorDocument 404 /error/404.html
+
+# 403エラーページのカスタマイズ
+ErrorDocument 403 /error/403.html
+
+# 500エラーページのカスタマイズ
+ErrorDocument 500 /error/500.html
+
+# 401エラーページのカスタマイズ
+ErrorDocument 401 /error/401.html
+            </pre>
+        </div>
+
+        <div class="config-section">
+            <h3>リダイレクト設定</h3>
+            <pre>
+# 301リダイレクト（恒久的）
+Redirect 301 /old-page.html /new-page.html
+
+# すべてのアクセスをHTTPSにリダイレクト
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# www有りにリダイレクト
+RewriteCond %{HTTP_HOST} ^example\.com [NC]
+RewriteRule ^(.*)$ https://www.example.com/$1 [L,R=301]
+            </pre>
+        </div>
+
+        <h2>Nginx 設定例</h2>
+
+        <div class="config-section">
+            <h3>エラーページとリダイレクト</h3>
+            <pre>
+server {
+    listen 80;
+    server_name example.com;
+
+    # カスタムエラーページ
+    error_page 404 /error/404.html;
+    error_page 403 /error/403.html;
+    error_page 500 502 503 504 /error/50x.html;
+
+    # 静的エラーページの配信
+    location /error/ {
+        internal;
+        root /var/www/html;
+    }
+
+    # 301リダイレクト
+    location /old-path {
+        return 301 /new-path;
+    }
+
+    # HTTPSへのリダイレクト
+    return 301 https://$server_name$request_uri;
+}
+            </pre>
+        </div>
+
+        <div class="note">
+            <h3>💡 ポイント</h3>
+            <ul>
+                <li>エラーページには「ページが見つかりません」等の分かりやすいメッセージを表示しましょう</li>
+                <li>403 Forbidden エラーでは「アクセス権限がありません」と表示するのが一般的です</li>
+                <li>404エラーページにはサイト内検索機能を設置すると便利です</li>
+            </ul>
+        </div>
+
+        <h2>Node.js Express での設定例</h2>
+        <pre>
+const express = require('express');
+const app = express();
+
+// 404エラーハンドラー
+app.use((req, res, next) => {
+    res.status(404).send('ページが見つかりません');
+});
+
+// 500エラーハンドラー
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('サーバーエラーが発生しました');
+});
+        </pre>
+
+        <h2>まとめ</h2>
+        <p>
+            適切なエラーページ設定とリダイレクト設定により、
+            ユーザー体験とSEOを向上させることができます。
+            特に 404 Not Found や 403 Forbidden などの
+            一般的なエラーには必ずカスタムページを用意しましょう。
+        </p>
+    </div>
+</body>
+</html>

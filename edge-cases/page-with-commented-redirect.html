@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コメント内リダイレクトコード - テストページ</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .note { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .comment { color: #6a9955; }
+    </style>
+    <script>
+        // 以下はすべてコメント内のコードなので実行されません
+
+        // location.href = '../index.html';
+        // window.location = 'https://example.com';
+        // window.location.href = 'other-page.html';
+
+        /*
+        location.href = '../index.html';
+        window.location = 'https://example.com';
+        window.location.replace('other-page.html');
+        */
+
+        /**
+         * 複数行コメント内のリダイレクトコード
+         * location.href = '../index.html';
+         * これらは実行されません
+         */
+
+        // TODO: 将来的にリダイレクト機能を追加
+        // setTimeout(function() { location.href = 'new-page.html'; }, 3000);
+
+        console.log('このページは正常です。リダイレクトは発生しません。');
+    </script>
+</head>
+<body>
+    <a href="redirect-false-positive.html" class="back-link">← テストページに戻る</a>
+
+    <h1>コメント内リダイレクトコード - テストページ</h1>
+
+    <div class="content">
+        <h2>このページについて</h2>
+        <p>
+            このページには<strong>JavaScriptコメント内</strong>に<code>location.href</code>コードが含まれていますが、
+            コメントは<strong>実行されません</strong>。
+        </p>
+
+        <div class="note">
+            <strong>✅ 期待される検出結果:</strong> リダイレクトとして検出<strong>されない</strong>
+        </div>
+
+        <h2>含まれているコメント内コード</h2>
+        <pre>
+<span class="comment">// location.href = '../index.html';</span>
+<span class="comment">// window.location = 'https://example.com';</span>
+<span class="comment">// window.location.href = 'other-page.html';</span>
+
+<span class="comment">/*
+location.href = '../index.html';
+window.location = 'https://example.com';
+window.location.replace('other-page.html');
+*/</span>
+
+<span class="comment">/**
+ * 複数行コメント内のリダイレクトコード
+ * location.href = '../index.html';
+ * これらは実行されません
+ */</span>
+
+<span class="comment">// TODO: 将来的にリダイレクト機能を追加
+// setTimeout(function() { location.href = 'new-page.html'; }, 3000);</span>
+        </pre>
+
+        <h2>実際に実行されるコード</h2>
+        <pre>
+console.log('このページは正常です。リダイレクトは発生しません。');
+        </pre>
+
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8;">
+            <li>単一行コメント <code>//</code> 内のコードを除外すること</li>
+            <li>複数行コメント <code>/* */</code> 内のコードを除外すること</li>
+            <li>JSDocコメント <code>/** */</code> 内のコードを除外すること</li>
+            <li>TODOコメント内のコードも除外すること</li>
+        </ul>
+    </div>
+</body>
+</html>

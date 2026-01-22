@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>addEventListener内リダイレクト - テストページ</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .note { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        button { padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #5568d6; }
+    </style>
+    <script>
+        // DOMContentLoaded後にイベントリスナーを登録
+        // これらはユーザーアクションによってのみ実行される
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // ボタンにクリックイベントを登録
+            const btn1 = document.getElementById('redirect-btn-1');
+            if (btn1) {
+                btn1.addEventListener('click', function() {
+                    location.href = '../index.html';
+                });
+            }
+
+            const btn2 = document.getElementById('redirect-btn-2');
+            if (btn2) {
+                btn2.addEventListener('click', () => {
+                    window.location.href = '../index.html';
+                });
+            }
+
+            // 別の形式
+            const btn3 = document.getElementById('redirect-btn-3');
+            if (btn3) {
+                btn3.onclick = function() {
+                    window.location = '../index.html';
+                };
+            }
+        });
+
+        // jQueryスタイルの疑似コード（実際にはjQueryなし）
+        // $(document).ready(function() {
+        //     $('.btn').on('click', function() {
+        //         location.href = 'other-page.html';
+        //     });
+        // });
+    </script>
+</head>
+<body>
+    <a href="redirect-false-positive.html" class="back-link">← テストページに戻る</a>
+
+    <h1>addEventListener内リダイレクト - テストページ</h1>
+
+    <div class="content">
+        <h2>このページについて</h2>
+        <p>
+            このページでは<code>addEventListener</code>を使用して
+            ボタンクリック時にリダイレクトする処理を登録しています。
+            これらは<strong>ユーザーがクリックした時のみ</strong>実行されるため、
+            自動リダイレクトではありません。
+        </p>
+
+        <div class="note">
+            <strong>✅ 期待される検出結果:</strong> リダイレクトとして検出<strong>されない</strong>
+        </div>
+
+        <h2>含まれているコード</h2>
+        <pre>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn1 = document.getElementById('redirect-btn-1');
+    if (btn1) {
+        btn1.addEventListener('click', function() {
+            location.href = '../index.html';
+        });
+    }
+
+    const btn2 = document.getElementById('redirect-btn-2');
+    if (btn2) {
+        btn2.addEventListener('click', () => {
+            window.location.href = '../index.html';
+        });
+    }
+});
+        </pre>
+
+        <h2>動作テスト（クリックで実行）</h2>
+        <p>以下のボタンをクリックすると、登録されたイベントハンドラが実行されます：</p>
+
+        <button id="redirect-btn-1">addEventListener - function形式</button>
+        <button id="redirect-btn-2">addEventListener - アロー関数形式</button>
+        <button id="redirect-btn-3">onclick - function形式</button>
+
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8;">
+            <li><code>addEventListener</code>内のリダイレクトコードを除外すること</li>
+            <li><code>onclick = function() { ... }</code>形式も除外すること</li>
+            <li>イベント駆動のコードと即座実行のコードを区別すること</li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ソフトエラー誤検知テスト - 正常ページ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .test-section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        .test-list li {
+            margin: 12px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+        }
+        .test-list a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .test-list a:hover {
+            text-decoration: underline;
+        }
+        .expected {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 8px;
+        }
+        .danger-zone {
+            border-left-color: #dc3545 !important;
+            background: #fff5f5 !important;
+        }
+        .warning-badge {
+            display: inline-block;
+            background: #ffc107;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-left: 8px;
+        }
+        .success-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-left: 8px;
+        }
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← ダッシュボードに戻る</a>
+
+    <h1>🔬 ソフトエラー誤検知テスト</h1>
+
+    <div class="test-section" style="background: #e8f5e9; border-left: 4px solid #4caf50;">
+        <h2 style="color: #2e7d32;">📊 期待される検出結果</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #c8e6c9;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #a5d6a7;">カテゴリー</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #a5d6a7;">件数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">総リンク数</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>9</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">✅ 正常（期待値）</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>9</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">❌ エラー（期待値）</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>0</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 15px; color: #555; font-size: 0.95em;">
+            💡 <strong>テスト目的:</strong> エラーキーワードを含む<strong>正常なページ</strong>へのリンクが誤ってソフトエラーと判定されないことを確認
+        </p>
+        <p style="margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 5px; color: #856404; font-size: 0.9em;">
+            ⚠️ <strong>重要:</strong> もしエラーとして検出されたら、それは<strong>誤検知</strong>です。検出ロジックの改善が必要です。
+        </p>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 タイトルに「エラー」を含む正常ページ</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            以下のリンク先は正常なページですが、タイトルにエラー関連キーワードを含みます。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="normal-page-error-keyword.html">エラーハンドリングの解説ページ</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>リンク先タイトル:</strong> 「エラーハンドリング入門 - プログラミング解説」<br>
+                    <strong>期待:</strong> ✅ 正常 (200 OK)<br>
+                    <strong>検出パターン:</strong> <code>/エラー/</code> に一致するが、実際はエラーページではない
+                </div>
+            </li>
+            <li>
+                <a href="normal-page-404-keyword.html">HTTP 404について学ぶ</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>リンク先タイトル:</strong> 「404エラーの原因と対策 - Web開発ガイド」<br>
+                    <strong>期待:</strong> ✅ 正常 (200 OK)<br>
+                    <strong>検出パターン:</strong> <code>/404/</code> に一致するが、実際はエラーページではない
+                </div>
+            </li>
+            <li>
+                <a href="normal-page-forbidden-keyword.html">Forbidden（禁断の果実）レシピ</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>リンク先タイトル:</strong> 「Forbidden Fruit Recipe - おいしいデザート集」<br>
+                    <strong>期待:</strong> ✅ 正常 (200 OK)<br>
+                    <strong>検出パターン:</strong> <code>/forbidden/i</code> に一致するが、実際はエラーページではない
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 コンテンツにエラーキーワードを含む正常ページ</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            以下のリンク先は正常なページですが、本文にエラー関連キーワードを含みます。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="normal-page-content-error.html">アクセス権限の設定方法</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>ページ内容:</strong> 「アクセス権限がありません」というエラーメッセージの解説<br>
+                    <strong>期待:</strong> ✅ 正常 (200 OK)<br>
+                    <strong>検出パターン:</strong> <code>/アクセス権限がありません/</code> に一致するが、解説文脈
+                </div>
+            </li>
+            <li>
+                <a href="normal-page-notfound-content.html">ページが見つからない時の対処法</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>ページ内容:</strong> 「ページが見つかりません」というエラーの対処法解説<br>
+                    <strong>期待:</strong> ✅ 正常 (200 OK)<br>
+                    <strong>検出パターン:</strong> <code>/ページが見つかりません/</code> に一致するが、解説文脈
+                </div>
+            </li>
+            <li>
+                <a href="normal-page-redirect-content.html">自動ジャンプ機能の実装方法</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>ページ内容:</strong> 「自動的にジャンプ」する機能のチュートリアル<br>
+                    <strong>期待:</strong> ✅ 正常 (200 OK)<br>
+                    <strong>検出パターン:</strong> <code>/自動.*ジャンプ/</code> に一致するが、実装解説
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 コードサンプルを含む技術ページ</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            プログラミングコードやコンフィグ例を含む正常なドキュメントページ。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="normal-page-code-sample.html">HTTPステータスコード一覧と処理方法</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>ページ内容:</strong> <code>if (status === 404) { showError() }</code> などのコード例<br>
+                    <strong>期待:</strong> ✅ 正常 (200 OK)<br>
+                    <strong>検出パターン:</strong> コード内に404, 403, forbidden等が含まれる
+                </div>
+            </li>
+            <li>
+                <a href="normal-page-config-sample.html">Webサーバー設定ガイド</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>ページ内容:</strong> <code>ErrorDocument 404 /404.html</code> などの設定例<br>
+                    <strong>期待:</strong> ✅ 正常 (200 OK)<br>
+                    <strong>検出パターン:</strong> 設定ファイル内にエラー関連キーワード
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li><strong>誤検知の有無:</strong> 上記すべてのリンクが「正常」と判定されること</li>
+            <li><strong>ソフトエラー判定:</strong> タイトル/コンテンツ分析でエラーとして検出されないこと</li>
+            <li><strong>文脈理解:</strong> キーワードの存在だけでなく、文脈を考慮した判定</li>
+        </ul>
+    </div>
+
+    <div class="test-section" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+        <h2 style="color: #856404;">⚠️ 誤検知が発生した場合</h2>
+        <p style="color: #555; line-height: 1.8;">
+            誤検知が発生した場合、以下の改善が必要です：
+        </p>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>検出パターンの厳格化（前後の文脈を考慮）</li>
+            <li>除外パターンの追加（技術ドキュメント、コードブロック等）</li>
+            <li>複合条件の導入（単一キーワードだけでなく複数の特徴を要求）</li>
+        </ul>
+    </div>
+</body>
+</html>

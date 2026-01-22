@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404エラーの原因と対策 - Web開発ガイド</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #667eea; color: white; }
+    </style>
+</head>
+<body>
+    <a href="soft-error-false-positive.html" class="back-link">← テストページに戻る</a>
+
+    <h1>404エラーの原因と対策</h1>
+
+    <div class="content">
+        <h2>404エラーとは</h2>
+        <p>
+            <strong>404 Not Found</strong>は、HTTPステータスコードの一つで、
+            クライアントがリクエストしたリソースがサーバー上に存在しないことを示します。
+        </p>
+
+        <h2>主な原因</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>原因</th>
+                    <th>説明</th>
+                    <th>対策</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>URLの打ち間違い</td>
+                    <td>ユーザーがURLを誤入力</td>
+                    <td>検索機能の提供</td>
+                </tr>
+                <tr>
+                    <td>ページの削除</td>
+                    <td>以前存在したページが削除された</td>
+                    <td>301リダイレクトの設定</td>
+                </tr>
+                <tr>
+                    <td>リンク切れ</td>
+                    <td>外部サイトからの古いリンク</td>
+                    <td>定期的なリンクチェック</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>カスタム404ページの作成</h2>
+        <p>ユーザーフレンドリーな404ページを作成する例：</p>
+        <pre>
+// .htaccessでの設定
+ErrorDocument 404 /custom-404.html
+
+// Nginxでの設定
+error_page 404 /custom-404.html;
+        </pre>
+
+        <div class="warning">
+            <strong>⚠️ 注意:</strong> 404エラーはSEOに悪影響を与える可能性があります。
+            定期的にサイトのリンク切れをチェックしましょう。
+        </div>
+
+        <h2>まとめ</h2>
+        <p>
+            404エラーは完全に防ぐことはできませんが、適切な対策により
+            ユーザー体験への影響を最小限に抑えることができます。
+        </p>
+    </div>
+</body>
+</html>

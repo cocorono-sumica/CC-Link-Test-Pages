@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自動ジャンプ機能の実装方法 - JavaScript入門</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .warning { background: #ffebee; border-left: 4px solid #f44336; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .good-practice { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 15px 0; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <a href="soft-error-false-positive.html" class="back-link">← テストページに戻る</a>
+
+    <h1>自動ジャンプ機能の実装方法</h1>
+
+    <div class="content">
+        <h2>はじめに</h2>
+        <p>
+            Webページで「<strong>自動的にジャンプ</strong>」する機能を実装する方法を解説します。
+            この機能は、メンテナンス告知や外部サイトへの誘導など、様々な場面で使用されます。
+        </p>
+
+        <h2>実装方法1: Meta Refreshタグ</h2>
+        <p>HTMLのみで自動ジャンプを実装できます：</p>
+        <pre>
+&lt;!-- 5秒後に自動的にジャンプ --&gt;
+&lt;meta http-equiv="refresh" content="5; url=https://example.com/new-page"&gt;
+        </pre>
+
+        <h2>実装方法2: JavaScriptによる実装</h2>
+        <p>より柔軟な制御が可能です：</p>
+        <pre>
+// 3秒後にトップページへ自動ジャンプ
+setTimeout(function() {
+    // 自動的にジャンプする
+    window.location.href = '/top';
+}, 3000);
+        </pre>
+
+        <h2>カウントダウン表示付きの実装</h2>
+        <pre>
+let count = 5;
+const countdown = setInterval(function() {
+    document.getElementById('timer').textContent = count;
+    if (count === 0) {
+        clearInterval(countdown);
+        // 自動ジャンプを実行
+        window.location.href = '/destination';
+    }
+    count--;
+}, 1000);
+        </pre>
+
+        <div class="warning">
+            <h3>⚠️ 注意点</h3>
+            <p>
+                自動ジャンプはユーザー体験に影響を与える可能性があります。
+                以下の点に注意してください：
+            </p>
+            <ul>
+                <li>必ずキャンセル機能を提供する</li>
+                <li>十分な待機時間を設定する（最低5秒推奨）</li>
+                <li>ジャンプ先を明示する</li>
+            </ul>
+        </div>
+
+        <div class="good-practice">
+            <h3>✅ ベストプラクティス</h3>
+            <p>
+                「5秒後に自動的にジャンプします」のようなメッセージを表示し、
+                ユーザーに通知してから自動ジャンプを行いましょう。
+                また、「今すぐ移動」と「ここに留まる」のボタンを提供することで、
+                ユーザーに選択肢を与えることができます。
+            </p>
+        </div>
+
+        <h2>まとめ</h2>
+        <p>
+            自動ジャンプ機能は適切に使用すれば便利ですが、
+            ユーザーの利便性を考慮した実装が重要です。
+        </p>
+    </div>
+</body>
+</html>

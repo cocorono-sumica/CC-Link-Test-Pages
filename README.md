@@ -25,13 +25,30 @@ Page-Check-Test-Web/
 │   ├── hidden-elements.html     # 非表示要素
 │   ├── special-protocols.html   # 特殊プロトコル
 │   └── redirects.html           # リダイレクト
-└── error-pages/                  # エラーページ
-    ├── 404.html                 # 404ページ
-    ├── soft-error-title.html    # ソフトエラー（タイトル）
-    ├── soft-error-content.html  # ソフトエラー（コンテンツ）
-    ├── meta-redirect.html       # Metaリダイレクト
-    ├── js-redirect-basic.html   # JS基本リダイレクト
-    └── js-redirect-delayed.html # JS遅延リダイレクト
+├── error-pages/                  # エラーページ
+│   ├── 404.html                 # 404ページ
+│   ├── soft-error-title.html    # ソフトエラー（タイトル）
+│   ├── soft-error-content.html  # ソフトエラー（コンテンツ）
+│   ├── meta-redirect.html       # Metaリダイレクト
+│   ├── js-redirect-basic.html   # JS基本リダイレクト
+│   └── js-redirect-delayed.html # JS遅延リダイレクト
+└── edge-cases/                   # エッジケース（誤検知テスト）
+    ├── soft-error-false-positive.html    # ソフトエラー誤検知テスト（メイン）
+    ├── redirect-false-positive.html      # リダイレクト誤検知テスト（メイン）
+    ├── normal-page-error-keyword.html    # 正常ページ（タイトルに「エラー」）
+    ├── normal-page-404-keyword.html      # 正常ページ（タイトルに「404」）
+    ├── normal-page-forbidden-keyword.html # 正常ページ（タイトルに「Forbidden」）
+    ├── normal-page-content-error.html    # 正常ページ（コンテンツにエラーキーワード）
+    ├── normal-page-notfound-content.html # 正常ページ（「ページが見つかりません」）
+    ├── normal-page-redirect-content.html # 正常ページ（「自動的にジャンプ」）
+    ├── normal-page-code-sample.html      # 正常ページ（コードサンプル内にエラーコード）
+    ├── normal-page-config-sample.html    # 正常ページ（設定ファイルサンプル）
+    ├── page-with-function-redirect.html  # 関数定義内のlocation操作
+    ├── page-with-postback.html           # ASP.NET __doPostBack関数
+    ├── page-with-onclick-redirect.html   # onclick属性内のlocation
+    ├── page-with-addeventlistener.html   # addEventListener内のlocation
+    ├── page-with-commented-redirect.html # コメント内のlocation
+    └── page-with-string-redirect.html    # 文字列リテラル内のlocation
 ```
 
 ## 🚀 使い方
@@ -121,6 +138,55 @@ Page-Check-Test-Web/
 - 遅延時間の解析
 - エラー理由の表示
 
+### 🔍 エッジケース - 誤検知テスト（16ページ）
+
+検出ロジックの**誤検知（False Positive）**を検証するテストページ群です。
+これらのページは全て「正常」として検出されるべきです。
+
+#### ソフトエラー誤検知テスト（9ページ）
+
+エラーキーワードを含むが、実際はエラーページではない正常なページの検証
+
+| ページ | 内容 | 誤検知リスク |
+|--------|------|-------------|
+| soft-error-false-positive.html | テストメインページ | - |
+| normal-page-error-keyword.html | タイトルに「エラーハンドリング入門」 | `/エラー/` パターン |
+| normal-page-404-keyword.html | タイトルに「404エラーの原因と対策」 | `/404/` パターン |
+| normal-page-forbidden-keyword.html | タイトルに「Forbidden Fruit Recipe」 | `/forbidden/i` パターン |
+| normal-page-content-error.html | コンテンツに「アクセス権限がありません」 | コンテンツ検出パターン |
+| normal-page-notfound-content.html | コンテンツに「ページが見つかりません」 | コンテンツ検出パターン |
+| normal-page-redirect-content.html | コンテンツに「自動的にジャンプ」 | リダイレクト検出パターン |
+| normal-page-code-sample.html | コードサンプル内に403/404等 | コード内エラーコード |
+| normal-page-config-sample.html | 設定ファイルにErrorDocument等 | 設定内エラー設定 |
+
+**検証ポイント:**
+- エラーキーワードが**文脈上正当**な場合は検出しないこと
+- チュートリアル・ドキュメント系ページの誤検知防止
+- コードサンプル・設定例の誤検知防止
+
+#### リダイレクト誤検知テスト（7ページ）
+
+`location.href`等のリダイレクトコードを含むが、実際には自動リダイレクトしないページの検証
+
+| ページ | 内容 | 検出除外の仕組み |
+|--------|------|-----------------|
+| redirect-false-positive.html | テストメインページ | - |
+| page-with-function-redirect.html | `function doRedirect() { location.href = '...' }` | 関数定義内は除外 |
+| page-with-postback.html | ASP.NET `__doPostBack` 関数 | 標準関数パターン除外 |
+| page-with-onclick-redirect.html | `onclick="location.href='...'"` | イベント属性内は除外 |
+| page-with-addeventlistener.html | `addEventListener('click', () => { location.href })` | イベントリスナー内は除外 |
+| page-with-commented-redirect.html | `// location.href = '...'` | コメント内は除外（要確認） |
+| page-with-string-redirect.html | `const s = 'location.href = "..."';` | 文字列内は除外（要確認） |
+
+**検証ポイント:**
+- **関数定義内**のリダイレクトコードは検出しないこと
+- **イベントハンドラ内**のコードは検出しないこと（ユーザーアクション必要）
+- **コメント内**のコードは検出しないこと
+- **文字列リテラル内**のコードは検出しないこと
+- ASP.NET WebFormsの`__doPostBack`等、標準パターンを除外すること
+
+**注意:** コメント・文字列の除外は現在の実装で未対応の可能性あり。テスト結果により改善要否を判断。
+
 ## 🎯 検証項目一覧
 
 ### リンクチェック機能
@@ -145,6 +211,18 @@ Page-Check-Test-Web/
 - [x] リダイレクト先URLの解析
 - [x] 遅延時間の解析
 
+### 誤検知防止（False Positive Prevention）
+- [ ] タイトル内エラーキーワードの文脈判断
+- [ ] コンテンツ内エラーキーワードの文脈判断
+- [ ] コードサンプル内のエラーコード除外
+- [ ] 設定ファイルサンプル内のエラー設定除外
+- [x] 関数定義内のリダイレクトコード除外
+- [x] ASP.NET __doPostBack等の標準パターン除外
+- [ ] onclick属性内のリダイレクトコード除外
+- [ ] addEventListener内のリダイレクトコード除外
+- [ ] コメント内のリダイレクトコード除外
+- [ ] 文字列リテラル内のリダイレクトコード除外
+
 ### UI/UX機能
 - [x] エラー番号の表示
 - [x] ハイライト機能（個別・一括）
@@ -156,9 +234,9 @@ Page-Check-Test-Web/
 
 ## 📊 統計
 
-- **カテゴリ数**: 4
-- **テストページ数**: 19
-- **検証項目数**: 50+
+- **カテゴリ数**: 5
+- **テストページ数**: 35
+- **検証項目数**: 70+
 
 ## 🔄 今後の拡張
 
@@ -170,7 +248,7 @@ Page-Check-Test-Web/
 Page-Check-Test-Web/
 ├── external-links/        # 外部リンクテスト（将来）
 ├── performance/           # パフォーマンステスト（将来）
-└── edge-cases/            # エッジケーステスト（将来）
+└── regression/            # 回帰テスト（将来）
 ```
 
 ## 💡 テストのヒント
@@ -196,6 +274,12 @@ Page-Check-Test-Web/
 - 拡張機能のバックグラウンドページでエラーログを確認
 
 ## 📝 変更履歴
+
+### v2.1 (2026-01-23)
+- エッジケース（誤検知テスト）カテゴリを追加
+- ソフトエラー誤検知テスト: 9ページ追加
+- リダイレクト誤検知テスト: 7ページ追加
+- 検証項目を70+に拡充
 
 ### v2.0 (2025-01-XX)
 - 初版リリース

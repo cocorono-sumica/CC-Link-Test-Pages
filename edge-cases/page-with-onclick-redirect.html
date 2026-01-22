@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>onclick属性内リダイレクト - テストページ</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .note { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        button, .btn { padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; display: inline-block; text-decoration: none; }
+        button:hover, .btn:hover { background: #5568d6; }
+    </style>
+</head>
+<body>
+    <a href="redirect-false-positive.html" class="back-link">← テストページに戻る</a>
+
+    <h1>onclick属性内リダイレクト - テストページ</h1>
+
+    <div class="content">
+        <h2>このページについて</h2>
+        <p>
+            このページには<strong>onclick属性内</strong>に<code>location.href</code>コードが含まれていますが、
+            これらは<strong>ユーザーがクリックした時のみ</strong>実行されます。
+            ページロード時には<strong>リダイレクトは発生しません</strong>。
+        </p>
+
+        <div class="note">
+            <strong>✅ 期待される検出結果:</strong> リダイレクトとして検出<strong>されない</strong>
+        </div>
+
+        <h2>onclick属性を含む要素</h2>
+        <pre>
+&lt;button onclick="location.href='../index.html'"&gt;
+    ダッシュボードへ移動
+&lt;/button&gt;
+
+&lt;div onclick="window.location='../index.html'"&gt;
+    クリックで移動
+&lt;/div&gt;
+
+&lt;span onclick="window.location.href='../index.html'"&gt;
+    テキストリンク風
+&lt;/span&gt;
+        </pre>
+
+        <h2>動作テスト（クリックで実行）</h2>
+        <p>以下の要素をクリックすると、リダイレクトが発生します：</p>
+
+        <button onclick="location.href='../index.html'">
+            ダッシュボードへ移動（button）
+        </button>
+
+        <button onclick="window.location='../index.html'">
+            window.location版
+        </button>
+
+        <button onclick="window.location.href='../index.html'">
+            window.location.href版
+        </button>
+
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8;">
+            <li><code>onclick</code>属性内のリダイレクトコードを除外すること</li>
+            <li>ユーザー操作によるリダイレクトは自動リダイレクトとは異なること</li>
+            <li>HTML属性内のJavaScriptコードの適切な処理</li>
+        </ul>
+    </div>
+</body>
+</html>

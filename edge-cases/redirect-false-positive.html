@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リダイレクト誤検知テスト - 正常ページ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .test-section {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        .test-list li {
+            margin: 12px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+        }
+        .test-list a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .test-list a:hover {
+            text-decoration: underline;
+        }
+        .expected {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 8px;
+        }
+        .success-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            margin-left: 8px;
+        }
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← ダッシュボードに戻る</a>
+
+    <h1>🔬 リダイレクト誤検知テスト</h1>
+
+    <div class="test-section" style="background: #e8f5e9; border-left: 4px solid #4caf50;">
+        <h2 style="color: #2e7d32;">📊 期待される検出結果</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #c8e6c9;">
+                    <th style="padding: 10px; text-align: left; border: 1px solid #a5d6a7;">カテゴリー</th>
+                    <th style="padding: 10px; text-align: center; border: 1px solid #a5d6a7;">件数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">総リンク数</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>7</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">✅ 正常（期待値）</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>7</strong></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #c8e6c9;">🔄 リダイレクト検出（期待値）</td>
+                    <td style="padding: 8px; text-align: center; border: 1px solid #c8e6c9;"><strong>0</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 15px; color: #555; font-size: 0.95em;">
+            💡 <strong>テスト目的:</strong> 関数定義内やイベントハンドラ内の<code>location.href</code>コードが誤ってリダイレクトとして検出されないことを確認
+        </p>
+        <p style="margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 5px; color: #856404; font-size: 0.9em;">
+            ⚠️ <strong>重要:</strong> もしリダイレクトとして検出されたら、それは<strong>誤検知</strong>です。検出ロジックの改善が必要です。
+        </p>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 関数定義内のlocationコード</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            以下のページは関数定義内に<code>location.href</code>を含みますが、<strong>即座に実行されるわけではありません</strong>。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="page-with-function-redirect.html">関数内にlocation.hrefを含むページ</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>コード例:</strong>
+                    <pre>function doRedirect() {
+    location.href = 'other-page.html';
+}</pre>
+                    <strong>期待:</strong> ✅ 正常 (リダイレクトとして検出されない)<br>
+                    <strong>理由:</strong> 関数定義内のコードは即座に実行されない
+                </div>
+            </li>
+            <li>
+                <a href="page-with-postback.html">ASP.NET __doPostBack関数を含むページ</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>コード例:</strong>
+                    <pre>function __doPostBack(target, arg) {
+    document.forms[0].submit();
+}</pre>
+                    <strong>期待:</strong> ✅ 正常 (フォーム送信として検出されない)<br>
+                    <strong>理由:</strong> ASP.NETの標準関数定義
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 イベントハンドラ内のlocationコード</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            イベントハンドラ内のコードは<strong>ユーザー操作によって実行</strong>されるため、自動リダイレクトではありません。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="page-with-onclick-redirect.html">onclickでリダイレクトするボタンがあるページ</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>コード例:</strong>
+                    <pre>&lt;button onclick="location.href='other-page.html'"&gt;移動&lt;/button&gt;</pre>
+                    <strong>期待:</strong> ✅ 正常 (リダイレクトとして検出されない)<br>
+                    <strong>理由:</strong> ユーザークリックがトリガー
+                </div>
+            </li>
+            <li>
+                <a href="page-with-addeventlistener.html">addEventListenerでリダイレクト処理を登録しているページ</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>コード例:</strong>
+                    <pre>button.addEventListener('click', () => {
+    location.href = 'other-page.html';
+});</pre>
+                    <strong>期待:</strong> ✅ 正常 (リダイレクトとして検出されない)<br>
+                    <strong>理由:</strong> イベント駆動のコード
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 コメント・文字列内のlocationコード</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            コメントや文字列内のコードは<strong>実行されません</strong>。
+        </p>
+        <ul class="test-list">
+            <li>
+                <a href="page-with-commented-redirect.html">コメント内にlocation.hrefを含むページ</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>コード例:</strong>
+                    <pre>// location.href = 'other-page.html';
+/* window.location = 'example.com'; */</pre>
+                    <strong>期待:</strong> ✅ 正常 (リダイレクトとして検出されない)<br>
+                    <strong>理由:</strong> コメントは実行されない
+                </div>
+            </li>
+            <li>
+                <a href="page-with-string-redirect.html">文字列内にlocation.hrefを含むページ</a>
+                <span class="success-badge">正常であるべき</span>
+                <div class="expected">
+                    <strong>コード例:</strong>
+                    <pre>const example = "location.href = 'url'";
+console.log('window.location = ...');</pre>
+                    <strong>期待:</strong> ✅ 正常 (リダイレクトとして検出されない)<br>
+                    <strong>理由:</strong> 文字列リテラルは実行されない
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 検証ポイント</h2>
+        <ul style="line-height: 1.8; color: #555;">
+            <li><strong>関数定義の除外:</strong> <code>function name() { location.href = ... }</code> が除外されること</li>
+            <li><strong>イベントハンドラの除外:</strong> <code>onclick</code>, <code>addEventListener</code> 内のコードが除外されること</li>
+            <li><strong>コメントの除外:</strong> <code>//</code> や <code>/* */</code> 内のコードが除外されること</li>
+            <li><strong>文字列の除外:</strong> <code>"..."</code> や <code>'...'</code> 内のコードが除外されること</li>
+        </ul>
+    </div>
+
+    <div class="test-section" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+        <h2 style="color: #856404;">⚠️ 誤検知が発生した場合</h2>
+        <p style="color: #555; line-height: 1.8;">
+            誤検知が発生した場合、以下の改善が必要です：
+        </p>
+        <ul style="line-height: 1.8; color: #555;">
+            <li>関数定義パターンの正規表現を改善（ネストされた関数への対応）</li>
+            <li>コメント・文字列の除外ロジック追加</li>
+            <li>イベントハンドラ属性（onclick等）の除外強化</li>
+        </ul>
+    </div>
+</body>
+</html>

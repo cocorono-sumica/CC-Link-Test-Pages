@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP.NET PostBack テストページ</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; background: #f9f9f9; }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 4px; }
+        .content { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .note { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px; }
+    </style>
+    <script>
+        // ASP.NET WebFormsの標準的なPostBack関数
+        // この関数定義はリダイレクトとして検出されるべきではない
+
+        var theForm = document.forms['form1'];
+        if (!theForm) {
+            theForm = document.form1;
+        }
+
+        function __doPostBack(eventTarget, eventArgument) {
+            if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+                theForm.__EVENTTARGET.value = eventTarget;
+                theForm.__EVENTARGUMENT.value = eventArgument;
+                theForm.submit();
+            }
+        }
+
+        // WebFormsの検証関数
+        function WebForm_DoPostBackWithOptions(options) {
+            var validationResult = true;
+            if (options.validation) {
+                validationResult = Page_ClientValidate(options.validationGroup);
+            }
+            if (validationResult) {
+                __doPostBack(options.eventTarget, options.eventArgument);
+            }
+        }
+
+        // 疑似的なPage_ClientValidate
+        function Page_ClientValidate(validationGroup) {
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <a href="redirect-false-positive.html" class="back-link">← テストページに戻る</a>
+
+    <h1>ASP.NET PostBack テストページ</h1>
+
+    <div class="content">
+        <h2>このページについて</h2>
+        <p>
+            このページには<strong>ASP.NET WebForms</strong>で使用される
+            <code>__doPostBack</code>関数が含まれています。
+            この関数内には<code>form.submit()</code>が含まれますが、
+            <strong>自動リダイレクトではありません</strong>。
+        </p>
+
+        <div class="note">
+            <strong>✅ 期待される検出結果:</strong> フォーム自動送信として検出<strong>されない</strong>
+        </div>
+
+        <h2>含まれているコード</h2>
+        <pre>
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+
+function WebForm_DoPostBackWithOptions(options) {
+    var validationResult = true;
+    if (options.validation) {
+        validationResult = Page_ClientValidate(options.validationGroup);
+    }
+    if (validationResult) {
+        __doPostBack(options.eventTarget, options.eventArgument);
+    }
+}
+        </pre>
+
+        <div class="warning">
+            <strong>⚠️ 注意:</strong>
+            <p>
+                <code>__doPostBack</code>はASP.NET WebFormsの標準関数であり、
+                非常に多くのWebサイトで使用されています。
+                この関数を誤ってリダイレクトとして検出すると、
+                大量の誤検知が発生します。
+            </p>
+        </div>
+
+        <h2>検証ポイント</h2>
+        <ul style="line-height: 1.8;">
+            <li><code>__doPostBack</code>関数定義を除外すること</li>
+            <li><code>form.submit()</code>が関数定義内にある場合は除外すること</li>
+            <li>ASP.NET WebFormsサイトで大量の誤検知が発生しないこと</li>
+        </ul>
+    </div>
+
+    <!-- ASP.NET WebFormsの標準的なフォーム構造（疑似） -->
+    <form name="form1" method="post" action="page-with-postback.html">
+        <input type="hidden" name="__EVENTTARGET" value="" />
+        <input type="hidden" name="__EVENTARGUMENT" value="" />
+        <input type="hidden" name="__VIEWSTATE" value="dummyViewState" />
+    </form>
+</body>
+</html>
